@@ -1,38 +1,44 @@
-F&B Anomaly Predictor: An Explainable AI Solution
-Live Dashboard: https://honeywell-lmd35um8vnmffe8pqtyeuz.streamlit.app/
+# F&B Anomaly Predictor: An Explainable AI Solution
 
-1. Project Overview
-This project is an end-to-end machine learning solution designed to proactively detect quality anomalies in an industrial bread-baking process. The core of the solution is an Explainable AI (XAI) system that doesn't just predict failures but also diagnoses their root cause.
+**Live Dashboard:** https://honeywell-lmd35um8vnmffe8pqtyeuz.streamlit.app/
 
-The entire system is delivered through a live, interactive Streamlit dashboard that allows users to simulate batch data, receive instant quality predictions, and understand the model's decision-making process. This project was developed for the Honeywell INNOVERSITÉ Hackathon.
+---
 
-2. The X-Factors: Our Unique Approach
-This project stands out due to two key strategic decisions:
+## 1) Project Overview
 
-High-Fidelity Synthetic Data Generation: Recognizing the absence of suitable public data, we engineered a realistic "digital twin" of the baking process. This was not a shortcut but a strategic choice to build a truly intelligent model. Our dataset simulates diverse, challenging failure modes (equipment malfunction, material variance, operator error) based on deep research into industrial baking standards.
+This project is an end-to-end machine learning solution designed to proactively detect quality anomalies in an industrial bread-baking process. The core of the solution is an **Explainable AI (XAI)** system that doesn't just predict failures but also diagnoses their root cause.
 
-Explainable AI (XAI) for Diagnostics: Our solution doesn't just predict a failure; it diagnoses the root cause. By integrating our high-accuracy XGBoost model with SHAP (SHapley Additive exPlanations), we provide actionable insights, turning a simple alert into a powerful diagnostic tool for factory operators.
+The entire system is delivered through a live, interactive **Streamlit** dashboard that allows users to simulate batch data, receive instant quality predictions, and understand the model's decision-making process. This project was developed for the **Honeywell INNOVERSITÉ Hackathon**.
 
-3. Tech Stack
-This project leverages a modern, open-source tech stack:
+---
 
-Programming Language: Python
+## 2) The X-Factors: Our Unique Approach
 
-Data Manipulation: Pandas, NumPy
+**High-Fidelity Synthetic Data Generation**  
+Recognizing the absence of suitable public data, we engineered a realistic “digital twin” of the baking process. This was not a shortcut but a strategic choice to build a truly intelligent model. Our dataset simulates diverse, challenging failure modes (equipment malfunction, material variance, operator error) based on deep research into industrial baking standards.
 
-Machine Learning: Scikit-learn, XGBoost
+**Explainable AI (XAI) for Diagnostics**  
+Our solution doesn't just predict a failure; it diagnoses the root cause. By integrating our high-accuracy **XGBoost** model with **SHAP (SHapley Additive exPlanations)**, we provide actionable insights—turning a simple alert into a powerful diagnostic tool for factory operators.
 
-Explainable AI: SHAP
+---
 
-Web Framework: Streamlit
+## 3) Tech Stack
 
-Visualization: Plotly, Matplotlib, Graphviz
+- **Programming Language:** Python  
+- **Data Manipulation:** Pandas, NumPy  
+- **Machine Learning:** Scikit-learn, XGBoost  
+- **Explainable AI:** SHAP  
+- **Web Framework:** Streamlit  
+- **Visualization:** Plotly, Matplotlib, Graphviz  
+- **Deployment:** Streamlit Community Cloud
 
-Deployment: Streamlit Community Cloud
+---
 
-4. Project Structure & Workflow
+## 4) Project Structure & Workflow
+
 This project is organized into a modular, production-ready structure. The core logic is a four-stage ML pipeline that feeds into the final web application.
 
+```
 .
 ├── artifacts/                # Stores all generated files (data, models, results)
 │   ├── data_generation/
@@ -50,70 +56,56 @@ This project is organized into a modular, production-ready structure. The core l
 ├── app.py                    # The main Streamlit dashboard application
 ├── requirements.txt          # Project dependencies
 └── README.md                 # You are here
+```
 
-How the Files are Linked:
-data_generation.py: Creates the raw process_data.csv and batch_quality.csv and saves them in artifacts/data_generation/.
+**How the Files are Linked:**
 
-feature_engineering.py: Reads the raw data, creates aggregated features (like Oven Temp (C)_std), and saves the final model_ready_data.csv in artifacts/feature_engineering/.
+- `data_generation.py`: Creates the raw `process_data.csv` and `batch_quality.csv` and saves them in `artifacts/data_generation/`.  
+- `feature_engineering.py`: Reads the raw data, creates aggregated features (like `Oven Temp (C)_std`), and saves the final `model_ready_data.csv` in `artifacts/feature_engineering/`.  
+- `model_training.py`: Reads the model-ready data, trains the XGBoost model, and saves the `model.pkl` file in `artifacts/model_training/`.  
+- `model_evaluation.py`: Reads the trained model and test data, and saves the final `metrics.json` and `shap_summary_plot.png` in `artifacts/model_evaluation/`.  
+- `app.py`: Reads all the final artifacts (`model.pkl`, datasets, metrics, plots) to build and display the interactive dashboard.
 
-model_training.py: Reads the model-ready data, trains the XGBoost model, and saves the model.pkl file in artifacts/model_training/.
+---
 
-model_evaluation.py: Reads the trained model and test data, and saves the final metrics.json and shap_summary_plot.png in artifacts/model_evaluation/.
+## 5) The Dataset: A High-Fidelity Digital Twin
 
-app.py: Reads all the final artifacts (model.pkl, datasets, metrics, plots) to build and display the interactive dashboard.
+All datasets generated by the pipeline are stored in the `artifacts/` directory.
 
-5. The Dataset: A High-Fidelity Digital Twin
-All datasets generated by the pipeline are stored in the artifacts/ directory.
+**Data Generation Process**  
+Our synthetic dataset is built around a **Golden Batch** profile, with ideal conditions established from research into industrial baking.
 
-Data Generation Process
-Our synthetic dataset is built around a "Golden Batch" profile, with ideal conditions established from research into industrial baking.
-
-Parameter
-
-Ideal Condition
-
-Flour Protein
-
-11.0 %
-
-Water Quantity
-
-5.5 kg (for 10kg flour)
-
-Mixing Time
-
-35.0 minutes
-
-Mixer Speed
-
-150.0 RPM
-
-Oven Temperature
-
-180.0 °C
-
-Oven Humidity
-
-45.0 %
+| Parameter          | Ideal Condition            |
+|--------------------|----------------------------|
+| Flour Protein      | 11.0 %                     |
+| Water Quantity     | 5.5 kg (for 10 kg flour)   |
+| Mixing Time        | 35.0 minutes               |
+| Mixer Speed        | 150.0 RPM                  |
+| Oven Temperature   | 180.0 °C                   |
+| Oven Humidity      | 45.0 %                     |
 
 To create a challenging and realistic dataset, we programmatically introduced three distinct anomaly types into the data:
 
-Equipment Failure: Simulating a faulty oven heater by introducing high variance (std = 5.0) into the Oven Temp (C) readings.
+- **Equipment Failure:** Simulating a faulty oven heater by introducing high variance (`std = 5.0`) into the **Oven Temp (°C)** readings.  
+- **Material Variance:** Simulating batches where high-protein flour (14%) was used without adjusting the water content, creating a significant `hydration_deviation`.  
+- **Operator Error:** Simulating batches where the mixing time was cut short to **25 minutes** (a 10-minute deviation).
 
-Material Variance: Simulating batches where high-protein flour (14%) was used without adjusting the water content, creating a significant hydration_deviation.
+---
 
-Operator Error: Simulating batches where the mixing time was cut short to 25 minutes (a 10-minute deviation).
+## 6) How to Run This Project Locally
 
-6. How to Run This Project Locally
-To set up and run this project on your local machine, follow these steps.
+Follow these steps to set up and run the project on your local machine.
 
-Step 1: Clone the Repository
-git clone [https://github.com/chetankoliparthi/honeywell.git](https://github.com/chetankoliparthi/honeywell.git)
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/chetankoliparthi/honeywell.git
 cd honeywell
+```
 
-Step 2: Set Up a Virtual Environment
+### Step 2: Set Up a Virtual Environment
 It is highly recommended to use a virtual environment to manage dependencies.
 
+```bash
 # Create the environment
 python -m venv venv
 
@@ -122,23 +114,41 @@ python -m venv venv
 
 # Activate it (macOS/Linux)
 source venv/bin/activate
+```
 
-Step 3: Install Dependencies
-Install all the required libraries from the requirements.txt file.
+### Step 3: Install Dependencies
+Install all the required libraries from the `requirements.txt` file.
 
+```bash
 pip install -r requirements.txt
+```
 
-Step 4: Run the ML Pipeline
+### Step 4: Run the ML Pipeline
 Execute the component scripts in order to generate all the necessary artifacts (data, model, etc.).
 
+```bash
 python src/FnbAnomalyPredictor/components/data_generation.py
 python src/FnbAnomalyPredictor/components/feature_engineering.py
 python src/FnbAnomalyPredictor/components/model_training.py
 python src/FnbAnomalyPredictor/components/model_evaluation.py
+```
 
-Step 5: Launch the Dashboard
+### Step 5: Launch the Dashboard
 Once the pipeline has completed, run the Streamlit application.
 
+```bash
 streamlit run app.py
+```
 
 Your web browser will automatically open with the live, interactive dashboard.
+
+---
+
+## Notes
+
+- If you modify any component (e.g., data generation parameters), re-run the pipeline steps to refresh the artifacts before launching the app.
+- The Streamlit app expects the artifacts to exist in the paths listed above (`artifacts/*`).
+
+---
+
+
